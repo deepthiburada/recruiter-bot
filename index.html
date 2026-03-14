@@ -4,258 +4,346 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Chat with Deepthi's AI Assistant</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #f7f6f3;
-      --surface: #ffffff;
-      --surface2: #f2f1ee;
-      --border: rgba(0,0,0,0.08);
-      --border2: rgba(0,0,0,0.14);
-      --text: #1a1917;
-      --text2: #6b6a66;
-      --text3: #9b9a96;
-      --blue: #1a5cff;
-      --blue-bg: #eef2ff;
-      --blue-text: #1a3ccc;
-      --green: #16a34a;
-      --green-bg: #f0fdf4;
-      --radius: 12px;
+      --pink:   #ff6b9d;
+      --orange: #ff9f43;
+      --yellow: #ffd93d;
+      --green:  #6bcb77;
+      --blue:   #4d96ff;
+      --purple: #c77dff;
+      --bg:     #fff9f0;
+      --surface:#ffffff;
+      --text:   #1e1e2e;
+      --text2:  #6b6b80;
+      --text3:  #a0a0b0;
     }
 
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
-      color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px 16px 40px;
+      padding: 32px 16px 48px;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    .page-header {
+    body::before {
+      content: '';
+      position: fixed;
+      top: -120px; left: -120px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(255,107,157,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: blobFloat 8s ease-in-out infinite;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -100px; right: -100px;
+      width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(77,150,255,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: blobFloat 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes blobFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(30px,20px) scale(1.05); }
+    }
+
+    .header {
       text-align: center;
-      max-width: 560px;
+      max-width: 580px;
       width: 100%;
       margin-bottom: 28px;
+      animation: fadeDown 0.6s ease both;
     }
 
-    .avatar-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin-bottom: 12px;
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
-    .avatar {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--blue-bg);
-      color: var(--blue-text);
-      font-size: 18px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1.5px solid rgba(26,92,255,0.15);
+    .avatar-ring {
+      width: 80px; height: 80px; border-radius: 50%;
+      padding: 3px; margin: 0 auto 16px;
+      background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+      animation: hueRot 8s linear infinite;
+    }
+    @keyframes hueRot { to { filter: hue-rotate(360deg); } }
+
+    .avatar-inner {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Nunito', sans-serif;
+      font-size: 24px; font-weight: 800; color: var(--text);
     }
 
-    .name-block h1 { font-size: 20px; font-weight: 500; color: var(--text); text-align: left; }
-    .name-block p  { font-size: 13px; color: var(--text2); text-align: left; margin-top: 2px; }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: var(--green);
-      background: var(--green-bg);
-      padding: 4px 10px;
-      border-radius: 999px;
+    .header h1 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 26px; font-weight: 800; color: var(--text);
+      margin-bottom: 6px;
     }
-    .status::before { content:''; width:7px; height:7px; border-radius:50%; background:var(--green); }
+    .header h1 span {
+      background: linear-gradient(90deg, var(--pink), var(--orange), var(--yellow));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .header p { font-size: 14px; color: var(--text2); margin-bottom: 14px; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 14px; }
+    .tag { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; font-family: 'Nunito', sans-serif; }
+    .t-pink   { background: #fff0f5; color: #d63384; }
+    .t-blue   { background: #eef4ff; color: #1a5cff; }
+    .t-green  { background: #f0fff4; color: #1a7a3c; }
+    .t-orange { background: #fff7ee; color: #b95000; }
+    .t-purple { background: #f5f0ff; color: #6a0dad; }
+
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      color: #1a7a3c; background: #f0fff4;
+      border: 1.5px solid #b7efc5;
+      padding: 5px 14px; border-radius: 999px;
+    }
+    .sdot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      animation: sdotPulse 2s ease-in-out infinite;
+    }
+    @keyframes sdotPulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.6; transform: scale(0.85); }
+    }
 
     .chat-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      width: 100%;
-      max-width: 620px;
+      border-radius: 24px;
+      width: 100%; max-width: 640px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      border: 2px solid rgba(0,0,0,0.06);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+      animation: fadeUp 0.7s ease 0.1s both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .topbar {
+      height: 6px;
+      background: linear-gradient(90deg,var(--pink),var(--orange),var(--yellow),var(--green),var(--blue),var(--purple),var(--pink));
+      background-size: 200% 100%;
+      animation: gradShift 3s linear infinite;
+    }
+    @keyframes gradShift {
+      0%   { background-position: 0% 0%; }
+      100% { background-position: 200% 0%; }
     }
 
     .chat-messages {
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      min-height: 320px;
-      max-height: 440px;
-      overflow-y: auto;
-      scroll-behavior: smooth;
+      display: flex; flex-direction: column; gap: 14px;
+      min-height: 300px; max-height: 420px;
+      overflow-y: auto; scroll-behavior: smooth;
     }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 4px; }
 
-    .msg { display: flex; gap: 10px; align-items: flex-start; animation: fadeUp 0.2s ease; }
+    .msg { display: flex; gap: 10px; align-items: flex-end; animation: msgPop 0.25s cubic-bezier(0.34,1.56,0.64,1) both; }
     .msg.user { flex-direction: row-reverse; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
+    @keyframes msgPop {
+      from { opacity: 0; transform: scale(0.85) translateY(8px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .msg-av {
-      width: 30px; height: 30px; border-radius: 50%;
+      width: 32px; height: 32px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 500; flex-shrink: 0; margin-top: 2px;
+      font-size: 11px; font-weight: 700; flex-shrink: 0;
+      font-family: 'Nunito', sans-serif;
     }
-    .msg.bot  .msg-av { background: var(--blue-bg); color: var(--blue-text); }
-    .msg.user .msg-av { background: var(--surface2); color: var(--text2); }
+    .msg.bot  .msg-av { background: linear-gradient(135deg,var(--blue),var(--purple)); color: white; }
+    .msg.user .msg-av { background: linear-gradient(135deg,var(--pink),var(--orange)); color: white; }
 
     .bubble {
-      max-width: 76%; padding: 11px 15px;
-      border-radius: var(--radius);
+      max-width: 76%; padding: 12px 16px;
       font-size: 14px; line-height: 1.65;
+      border-radius: 18px;
     }
-    .msg.bot  .bubble { background: var(--surface2); color: var(--text); border-bottom-left-radius: 4px; }
-    .msg.user .bubble { background: var(--blue); color: #fff; border-bottom-right-radius: 4px; }
+    .msg.bot  .bubble { background: #f4f4f8; color: var(--text); border-bottom-left-radius: 4px; }
+    .msg.user .bubble { background: linear-gradient(135deg,var(--pink),var(--orange)); color: white; border-bottom-right-radius: 4px; }
 
     .typing-bubble {
-      background: var(--surface2); padding: 14px 16px;
-      border-radius: var(--radius); border-bottom-left-radius: 4px;
+      background: #f4f4f8; padding: 14px 18px;
+      border-radius: 18px; border-bottom-left-radius: 4px;
       display: flex; gap: 5px; align-items: center;
     }
     .typing-bubble span {
       width: 7px; height: 7px; border-radius: 50%;
-      background: var(--text3); animation: bounce 1.1s infinite;
+      animation: bounce 1.1s infinite;
     }
-    .typing-bubble span:nth-child(2) { animation-delay: 0.18s; }
-    .typing-bubble span:nth-child(3) { animation-delay: 0.36s; }
-
+    .typing-bubble span:nth-child(1) { background: var(--pink); }
+    .typing-bubble span:nth-child(2) { background: var(--orange); animation-delay: 0.18s; }
+    .typing-bubble span:nth-child(3) { background: var(--blue);   animation-delay: 0.36s; }
     @keyframes bounce {
       0%,60%,100% { transform: translateY(0); }
-      30%          { transform: translateY(-5px); }
+      30%          { transform: translateY(-6px); }
     }
 
-    .divider { height: 1px; background: var(--border); margin: 0 20px; }
+    .divider { height: 1px; background: #f0f0f0; margin: 0 20px; }
 
-    .quick-section { padding: 14px 20px 10px; }
+    .quick-section { padding: 14px 20px 12px; }
     .quick-label {
-      font-size: 11px; font-weight: 500; color: var(--text3);
-      letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px;
+      font-size: 11px; font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      color: var(--text3); letter-spacing: 0.06em;
+      text-transform: uppercase; margin-bottom: 10px;
     }
     .quick-btns { display: flex; flex-wrap: wrap; gap: 7px; }
 
     .qbtn {
-      font-family: 'DM Sans', sans-serif; font-size: 12.5px;
-      color: var(--text2); background: var(--surface2);
-      border: 1px solid var(--border2); border-radius: 999px;
-      padding: 6px 13px; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12.5px; font-weight: 700;
+      padding: 7px 14px; border-radius: 999px;
+      border: 2px solid transparent;
+      cursor: pointer; transition: all 0.18s; white-space: nowrap;
     }
-    .qbtn:hover { background: var(--blue-bg); color: var(--blue-text); border-color: rgba(26,92,255,0.2); }
+    .qbtn:nth-child(8n+1) { background:#fff0f5; color:#d63384; border-color:#ffc8dd; }
+    .qbtn:nth-child(8n+2) { background:#eef4ff; color:#1a5cff; border-color:#c0d4ff; }
+    .qbtn:nth-child(8n+3) { background:#fff7ee; color:#b95000; border-color:#ffd3a8; }
+    .qbtn:nth-child(8n+4) { background:#f0fff4; color:#1a7a3c; border-color:#b7efc5; }
+    .qbtn:nth-child(8n+5) { background:#f5f0ff; color:#6a0dad; border-color:#d8b4ff; }
+    .qbtn:nth-child(8n+6) { background:#fff0f5; color:#d63384; border-color:#ffc8dd; }
+    .qbtn:nth-child(8n+7) { background:#eef4ff; color:#1a5cff; border-color:#c0d4ff; }
+    .qbtn:nth-child(8n+8) { background:#fff7ee; color:#b95000; border-color:#ffd3a8; }
+    .qbtn:hover  { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .qbtn:active { transform: translateY(0); }
 
-    .input-section { padding: 14px 16px 16px; display: flex; gap: 10px; align-items: flex-end; }
+    .input-section { padding: 12px 16px 18px; display: flex; gap: 10px; align-items: center; }
 
     .input-wrap {
-      flex: 1; background: var(--surface2); border: 1px solid var(--border2);
-      border-radius: var(--radius); display: flex; align-items: center; padding: 0 14px;
-      transition: border-color 0.15s;
+      flex: 1; background: #f4f4f8; border-radius: 999px;
+      display: flex; align-items: center; padding: 0 18px;
+      border: 2px solid transparent; transition: all 0.2s;
     }
-    .input-wrap:focus-within { border-color: rgba(26,92,255,0.35); }
+    .input-wrap:focus-within { border-color: var(--pink); background: white; }
     .input-wrap input {
       flex: 1; border: none; background: transparent;
-      font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--text);
       padding: 12px 0; outline: none;
     }
     .input-wrap input::placeholder { color: var(--text3); }
 
     .send-btn {
-      width: 42px; height: 42px; border-radius: 50%;
-      background: var(--blue); border: none; cursor: pointer;
+      width: 46px; height: 46px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: opacity 0.15s, transform 0.1s;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(255,107,157,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    .send-btn:hover  { opacity: 0.88; }
-    .send-btn:active { transform: scale(0.95); }
-    .send-btn:disabled { opacity: 0.35; cursor: default; }
+    .send-btn:hover   { transform: scale(1.08); box-shadow: 0 6px 20px rgba(255,107,157,0.5); }
+    .send-btn:active  { transform: scale(0.95); }
+    .send-btn:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
 
-    .footer-links { display: flex; gap: 16px; margin-top: 20px; font-size: 13px; }
-    .footer-links a {
-      color: var(--text2); text-decoration: none;
-      display: flex; align-items: center; gap: 5px; transition: color 0.15s;
+    .footer-links {
+      display: flex; gap: 14px; margin-top: 24px;
+      animation: fadeUp 0.8s ease 0.3s both;
     }
-    .footer-links a:hover { color: var(--blue); }
+    .footer-links a {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px; font-weight: 700;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: 999px;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .footer-links a:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
+    .lk-li { background: #eef4ff; color: #1a5cff; }
+    .lk-cv { background: #fff0f5; color: #d63384; }
 
     @media (max-width: 480px) {
-      body { padding: 16px 10px 32px; }
+      body { padding: 20px 10px 36px; }
       .chat-messages { max-height: 360px; }
       .bubble { max-width: 88%; }
+      .header h1 { font-size: 22px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="page-header">
-    <div class="avatar-row">
-      <div class="avatar">DK</div>
-      <div class="name-block">
-        <h1>Deepthi's AI Assistant</h1>
-        <p>Data Engineer + AI/ML · MS CS · Azure &amp; AWS Certified</p>
-      </div>
+  <div class="header">
+    <div class="avatar-ring"><div class="avatar-inner">DB</div></div>
+    <h1>Chat with <span>Deepthi's</span> AI!</h1>
+    <p>Data Engineer · 6+ years · AWS · Azure · GCP · AI/ML</p>
+    <div class="tags">
+      <span class="tag t-pink">Snowflake</span>
+      <span class="tag t-blue">Apache Spark</span>
+      <span class="tag t-green">dbt</span>
+      <span class="tag t-orange">Kafka</span>
+      <span class="tag t-purple">LLMs &amp; RAG</span>
+      <span class="tag t-blue">Databricks</span>
+      <span class="tag t-pink">Python</span>
+      <span class="tag t-green">Terraform</span>
     </div>
-    <span class="status">Available now — ask me anything</span>
+    <span class="status-pill"><span class="sdot"></span>Open to new opportunities</span>
   </div>
 
   <div class="chat-card">
+    <div class="topbar"></div>
     <div class="chat-messages" id="chat">
       <div class="msg bot">
         <div class="msg-av">AI</div>
-        <div class="bubble">Hi! I'm Deepthi's AI assistant. Feel free to ask me anything about her background, experience, or the kind of roles she's exploring — I'm happy to help!</div>
+        <div class="bubble">Hi! I'm Deepthi's AI assistant. Feel free to ask me anything about her background, experience, or the kind of roles she's exploring — I'm happy to help! 🚀</div>
       </div>
     </div>
-
     <div class="divider"></div>
-
     <div class="quick-section">
       <div class="quick-label">Quick questions</div>
       <div class="quick-btns">
         <button class="qbtn" onclick="ask('Tell me about yourself')">Tell me about yourself</button>
         <button class="qbtn" onclick="ask('What is your AI and LLM experience?')">AI &amp; LLM experience</button>
-        <button class="qbtn" onclick="ask('What data engineering tools and technologies do you work with?')">Data engineering stack</button>
+        <button class="qbtn" onclick="ask('What data engineering tools do you work with?')">Data engineering stack</button>
         <button class="qbtn" onclick="ask('What cloud platforms have you worked on?')">Cloud experience</button>
         <button class="qbtn" onclick="ask('Tell me about your experience at Deutsche Bank')">Deutsche Bank work</button>
-        <button class="qbtn" onclick="ask('What is your experience with real-time streaming pipelines?')">Streaming experience</button>
+        <button class="qbtn" onclick="ask('What is your experience with real-time streaming?')">Streaming experience</button>
         <button class="qbtn" onclick="ask('What kind of roles are you looking for?')">Target roles</button>
         <button class="qbtn" onclick="ask('Do you need visa sponsorship?')">Visa sponsorship?</button>
       </div>
     </div>
-
     <div class="input-section">
       <div class="input-wrap">
-        <input type="text" id="user-input" placeholder="Ask something about Deepthi…" autocomplete="off" />
+        <input type="text" id="user-input" placeholder="Ask anything about Deepthi…" autocomplete="off" />
       </div>
       <button class="send-btn" id="send-btn" title="Send">
         <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <path d="M2 9L16 9M10 3L16 9L10 15" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 9L16 9M10 3L16 9L10 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
     </div>
   </div>
 
   <div class="footer-links">
-    <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank">
+    <a href="https://linkedin.com/in/YOUR_LINKEDIN" target="_blank" class="lk-li">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
       LinkedIn
     </a>
-    <a href="YOUR_RESUME_PDF_LINK" target="_blank">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+    <a href="YOUR_RESUME_PDF_LINK" target="_blank" class="lk-cv">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
       Download Resume
     </a>
   </div>
@@ -265,104 +353,44 @@
       role: 'system',
       content: `You are an AI assistant representing Deepthi Burada, a Senior Data Engineer with 6+ years of experience, currently open to new opportunities. Answer recruiter questions clearly, professionally, and concisely — 2 to 4 sentences unless more detail is genuinely needed.
 
-POSITIONING:
-Deepthi is a Data Engineer first — she designs and builds production-grade, governed data platforms processing billions of records daily. What sets her apart is deep hands-on AI/ML integration: she builds LLM-powered pipelines, RAG systems, and ML-ready data infrastructure. She is comfortable across AWS, Azure, and GCP. Do NOT position her as a pure Data Scientist. Always lead with data engineering depth, then highlight AI/ML as a strong differentiator.
+POSITIONING: Deepthi is a Data Engineer first — production-grade data platforms processing billions of records daily. AI/ML integration is her key differentiator. Always lead with data engineering, then highlight AI/ML. Never position as pure Data Scientist.
 
 PROFILE:
-Name: Deepthi Burada
-Location: Cary, NC (open to relocation and remote)
-Education: MS in Computer Science, University of Texas at Arlington
-Certifications: Microsoft Certified Azure Data Engineer Associate, AWS Certified Data Engineer Associate, Azure Data Fundamentals, Google Cloud Associate Cloud Engineer
-Total Experience: 6+ years
+Name: Deepthi Burada | Location: Cary, NC (open to remote/relocation)
+Education: MS Computer Science, University of Texas at Arlington
+Certifications: Azure Data Engineer Associate, AWS Data Engineer Associate, Azure Data Fundamentals, GCP Associate Cloud Engineer
+Experience: 6+ years
 
-WORK EXPERIENCE (most recent first):
+WORK EXPERIENCE:
+1. Data Engineer I — Deutsche Bank, Cary NC (Jan 2024–Present)
+Snowflake, Kafka, dbt, Databricks, Airflow — billions of records daily for regulatory reporting (BCBS 239, GDPR, DORA). Builds LLM-assisted data quality checks, anomaly detection, RAG-ready pipelines using OpenAI and LangChain. Terraform IaC, 24x7 on-call lead.
 
-1. Data Engineer I — Deutsche Bank, Cary, NC (Jan 2024 – Present)
-- Builds and maintains batch and real-time streaming pipelines using Snowflake, AWS S3, Kafka, Apache Airflow, Databricks, and dbt processing billions of records daily for regulatory reporting (BCBS 239, GDPR, DORA)
-- Develops dbt Cloud models to standardize risk and compliance metrics with end-to-end lineage across bronze/silver/gold layers
-- Builds AI-driven features: LLM-assisted data quality checks, anomaly detection, and documentation automation using OpenAI, LangChain, and prompt engineering
-- Builds RAG-ready data pipelines supporting vector search and embedding workflows for downstream AI experimentation
-- Manages IaC using Terraform for Snowflake, AWS S3, Kafka, IAM; deploys via CI/CD with automated testing and rollback
-- Implements monitoring and alerting using CloudWatch, Snowflake alerts, dbt tests, PagerDuty, and Slack; leads 24x7 on-call rotation
+2. AWS Data Engineer — Food Lion, Remote (Dec 2022–May 2023)
+10M+ daily retail transactions. AWS Glue, Kinesis, Lambda, Snowflake. 15TB+ warehouse: 10x query performance, 25% cost savings. 50k+ events/sec streaming. 100TB+ S3 data lake. Reduced ETL effort 40%.
 
-2. AWS Data Engineer — Food Lion, Remote USA (Dec 2022 – May 2023)
-- Architected end-to-end retail data platform processing 10M+ daily transactions using AWS Glue, Kinesis, Lambda, Airflow, and Snowflake — reduced manual ETL effort by 40%
-- Designed and optimized 15TB+ Snowflake data warehouse with bronze/silver/gold layers, clustering keys, and materialized views — achieved 10x query performance improvement and 25% cost savings
-- Built real-time streaming pipelines processing 50,000+ events/second using Kinesis and Kafka with sub-minute latency
-- Established data lake on Amazon S3 (100TB+) with AWS Lake Formation and Glue Data Catalog
-- Implemented IaC using Terraform and CloudFormation; reduced pipeline failures by 60%
+3. Associate Data Engineer — Royal Bank of Scotland, Pune India (Feb 2019–Jan 2022)
+Azure ADF, Databricks, Synapse — 5M+ daily financial transactions. Kafka+Flink sub-second latency for MiFID II. 20TB+ warehouse SCD Type 2. 99.9% data accuracy. Reduced production incidents 55%.
 
-3. Associate Data Engineer — Royal Bank of Scotland, Pune, India (Feb 2019 – Jan 2022)
-- Delivered regulated banking data platform on Azure (ADF, Databricks, Synapse) processing 5M+ daily financial transactions for risk, fraud, and regulatory reporting
-- Designed real-time market data pipelines using Kafka and Flink with sub-second latency for MiFID II compliance
-- Built 20TB+ dimensional data warehouse in Azure Synapse with SCD Type 2 and 5-second query SLA
-- Developed PySpark ETL jobs achieving 99.9% data accuracy; reduced production incidents by 55% via Azure DevOps CI/CD
+4. Data Engineer — BioLogical E Limited, Hyderabad India (May 2018–Jan 2019)
+Kafka+Flink: 100k+ IoT events/min. Spark optimization: 3x performance, 40% cost reduction.
 
-4. Data Engineer — BioLogical E Limited, Hyderabad, India (May 2018 – Jan 2019)
-- Built real-time IoT ingestion platform using Kafka and Flink processing 100,000+ events/minute from manufacturing sensors
-- Optimized Spark batch jobs using broadcast joins, caching, and partitioning — improved performance 3x, reduced costs 40%
-- Implemented Airflow orchestration and CI/CD with Jenkins and GitHub Actions
+SKILLS: Python, SQL, Scala | Snowflake, BigQuery, Synapse, Redshift | Spark, PySpark, Kafka, Flink, dbt, Delta Lake | AWS/Azure/GCP (all three certified) | LLMs, RAG, LangChain, FAISS, OpenAI | Terraform, Docker, Kubernetes
 
-TECHNICAL SKILLS:
-- Cloud: AWS (Glue, S3, Redshift, Lambda, Kinesis, EMR, SageMaker, Step Functions), Azure (Databricks, ADF, ADLS Gen2, Synapse, AKS, DevOps), GCP (BigQuery, Dataflow, Dataproc, Pub/Sub, Cloud Composer, Vertex AI)
-- Big Data & Streaming: Apache Spark, PySpark, Kafka, Apache Flink, Delta Lake, Hadoop, dbt
-- Data Warehousing: Snowflake, BigQuery, Azure Synapse, Amazon Redshift, Delta Lakehouse (medallion architecture)
-- AI/ML: LLMs, RAG, LangChain, FAISS, OpenAI GPT, Prompt Engineering, Feature Engineering, TensorFlow, scikit-learn, Vertex AI
-- Languages: Python, SQL, Scala, T-SQL, Bash, Go, Node.js, React
-- DevOps: Terraform, Docker, Kubernetes (AKS/GKE), GitHub Actions, Azure DevOps, Jenkins
-- Governance & Security: RBAC, Data Masking, Encryption, BCBS 239, GDPR, DORA, HIPAA compliance
+PROJECTS: RAG chatbot (GPT-3.5+FAISS+LangChain, 20% relevance improvement) | NYC Taxi pipeline (1M+ daily records, BigQuery, 25% faster queries)
 
-KEY PROJECTS:
-- RAG Chatbot for Customer Support: Built production RAG chatbot using GPT-3.5, FAISS, and LangChain — improved response relevance by 20%; deployed with full ML lifecycle management
-- New York Taxi Data Pipeline: Processed 1M+ daily trip records with PySpark and Docker into BigQuery — improved query speed 25%, automated with Airflow reducing manual oversight 40%
+INDUSTRY BRIDGES (use when asked about industries not in her background):
+- Healthcare → HIPAA compliance, regulated pipelines, data governance at Deutsche Bank & RBS
+- Government → BCBS 239, GDPR, DORA, auditable governed data platforms
+- E-commerce → Food Lion: 10M+ daily transactions, real-time retail analytics
+- Unknown industry → transferable: scalable pipelines, real-time streaming, all 3 clouds, AI integration
 
-TARGET ROLES: Senior Data Engineer, Data Engineer with AI/ML, Cloud Data Engineer, Azure/AWS/GCP Data Engineer, Data Platform Engineer
-
-OPEN TO: Remote, hybrid, or relocation. Open to discussing all work authorization details directly.
-
-VISA/SPONSORSHIP: If asked, say "Deepthi would be happy to discuss work authorization details directly with your team."
-
-INDUSTRY EXPERIENCE & SMART BRIDGES:
-Deepthi has worked in these industries directly:
-- Banking / Fintech: Deutsche Bank (current), Royal Bank of Scotland — regulatory pipelines, BCBS 239, GDPR, DORA, MiFID II compliance, fraud detection, risk analytics
-- Retail: Food Lion — 10M+ daily transactions, real-time inventory and sales analytics
-- Pharma / Manufacturing: BioLogical E — IoT sensor data, clinical trial data pipelines
-
-If a recruiter asks about an industry NOT directly in her background, NEVER make up experience. Instead:
-1. Honestly acknowledge it is not her primary background
-2. Bridge to the closest real experience she has
-3. Highlight transferable skills that apply directly
-4. Keep the door open by inviting them to discuss further
-
-BRIDGE EXAMPLES — use these as a guide:
-
-Healthcare question (e.g. "what is your healthcare expertise?"):
-→ "Deepthi's background is primarily in banking and retail data engineering rather than healthcare systems directly. That said, her experience with strict compliance frameworks — HIPAA, GDPR, BCBS 239 — regulated data pipelines, data masking, encryption, and RBAC at Deutsche Bank and RBS translates directly to healthcare data environments. She is confident she can ramp up quickly and would love to discuss how her skills apply to your specific needs."
-
-Government / public sector question:
-→ "Deepthi hasn't worked directly in government, but her experience with highly regulated environments — banking compliance, GDPR, DORA, BCBS 239 — and building governed, auditable data platforms maps closely to public sector data requirements. She'd be happy to discuss further."
-
-E-commerce question:
-→ "Her closest experience is at Food Lion where she built a retail data platform processing 10M+ daily transactions with real-time inventory and sales analytics. E-commerce data challenges are very similar — high volume, real-time streaming, and analytics at scale — which is her core strength."
-
-Telecom / media / other unknown industry:
-→ "Deepthi hasn't worked directly in [industry], but her core skills — scalable data pipelines, real-time streaming at billions of records daily, cloud-native architecture across AWS, Azure, and GCP, and AI-integrated data platforms — are highly transferable across industries. She'd love to chat about how her background fits your specific use case."
-
-RULES:
-- Always lead with Data Engineering depth, then highlight AI/ML as a differentiator
-- Use specific numbers and achievements when answering (billions of records, 10x performance, 40% cost reduction etc.)
-- Never make up experience or claim expertise Deepthi does not have
-- When something is outside her background, always bridge honestly to what IS relevant — never just say no
-- Always end unknown-domain answers with an invitation to discuss further
-- Never share personal contact info (phone, personal email, home address)
-- Stay warm, confident, and professional at all times
-- If asked for resume, say it can be downloaded from this page`
+RULES: Never make up experience. For unknown domains, bridge honestly then invite to discuss. Never share personal contact info. Always end with warmth and openness. If asked for resume, say it can be downloaded from this page.`
     };
 
     const chat = document.getElementById('chat');
     const inputEl = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
-    const history = []; // stores only user/assistant turns (not the system message)
+    const history = [];
 
     function scrollBottom() { chat.scrollTop = chat.scrollHeight; }
 
@@ -383,58 +411,37 @@ RULES:
 
     function showTyping() {
       const wrap = document.createElement('div');
-      wrap.className = 'msg bot';
-      wrap.id = 'typing';
+      wrap.className = 'msg bot'; wrap.id = 'typing';
       wrap.innerHTML = '<div class="msg-av">AI</div><div class="typing-bubble"><span></span><span></span><span></span></div>';
-      chat.appendChild(wrap);
-      scrollBottom();
+      chat.appendChild(wrap); scrollBottom();
     }
 
-    function removeTyping() {
-      const t = document.getElementById('typing');
-      if (t) t.remove();
-    }
+    function removeTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
 
-    async function ask(question) {
-      inputEl.value = question;
-      await send();
-    }
+    async function ask(q) { inputEl.value = q; await send(); }
 
     async function send() {
       const q = inputEl.value.trim();
       if (!q || sendBtn.disabled) return;
-      inputEl.value = '';
-      sendBtn.disabled = true;
-
+      inputEl.value = ''; sendBtn.disabled = true;
       addMsg('user', q);
       history.push({ role: 'user', content: q });
       showTyping();
-
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            messages: [SYSTEM_MESSAGE, ...history]
-          })
+          body: JSON.stringify({ messages: [SYSTEM_MESSAGE, ...history] })
         });
-
-        if (!res.ok) throw new Error('API error ' + res.status);
+        if (!res.ok) throw new Error(res.status);
         const data = await res.json();
-        const answer = data.answer || "Sorry, I couldn't get a response. Please try again.";
-
-        removeTyping();
-        addMsg('bot', answer);
+        const answer = data.answer || "Sorry, couldn't get a response. Please try again.";
+        removeTyping(); addMsg('bot', answer);
         history.push({ role: 'assistant', content: answer });
-
-      } catch (err) {
-        removeTyping();
-        addMsg('bot', 'Something went wrong. Please try again in a moment.');
-        console.error(err);
+      } catch(err) {
+        removeTyping(); addMsg('bot', 'Something went wrong. Please try again in a moment.');
       }
-
-      sendBtn.disabled = false;
-      inputEl.focus();
+      sendBtn.disabled = false; inputEl.focus();
     }
 
     sendBtn.addEventListener('click', send);
